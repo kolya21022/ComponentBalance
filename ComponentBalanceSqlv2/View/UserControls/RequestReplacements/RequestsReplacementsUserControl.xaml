@@ -1,0 +1,243 @@
+﻿<UserControl x:Class="ComponentBalanceSqlv2.View.UserControls.RequestReplacements.RequestsReplacementsUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:converters="clr-namespace:ComponentBalanceSqlv2.Converters"
+             xmlns:styles="clr-namespace:ComponentBalanceSqlv2.Utils.Styles"
+             xmlns:viewModels="clr-namespace:ComponentBalanceSqlv2.ViewModel.RequestReplacements"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="650">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:BoolToVisibilityConverter x:Key="BoolToHiddenConverter" 
+                                              TrueValue="Visible" FalseValue="Collapsed"/>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../../Utils/Styles/SvgIconsDictionary.xaml"/>
+                <ResourceDictionary Source="../../../Utils/Styles/Components.xaml"/>
+                <ResourceDictionary Source="../../../Utils/Styles/Text.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="2.5*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <!-- Заголовок страницы -->
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Rectangle Grid.Row="0"
+                       Fill="{x:Static styles:Visual.BackColor3_SanJuan}" />
+            <Label Grid.Row="0"
+                   Style="{StaticResource LabelStyle}"
+                   Content="Список открытых запросов на замену деталей"/>
+            <Rectangle Grid.Row="1"
+                       Fill="{x:Static styles:Visual.BackColor5_WaikawaGray}" />
+            <Button Grid.Row="1"
+                    Style="{StaticResource ButtonStyle}"  
+                    Margin="2.5, 1"
+                    HorizontalAlignment="Right"
+                    Width="150"
+                    ToolTip="Добавить запрос" 
+                    Command="{Binding AddCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle Width="20" Margin="5 0">
+                        <Rectangle.Fill>
+                            <VisualBrush Visual="{StaticResource AddSvgIcon}" Stretch="Uniform" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock Text="Добавить запрос" 
+                               VerticalAlignment="Center" 
+                               TextTrimming="CharacterEllipsis"/>
+                </StackPanel>
+            </Button>
+
+        </Grid>
+        <DataGrid Grid.Row="1"
+                      Margin="2.5 0"
+                      Style="{StaticResource GridStyle}"
+                      CellStyle="{StaticResource CellStyle}" 
+                      ItemsSource="{Binding Request}"
+                      SelectedItem="{Binding SelectedRequest, Mode=TwoWay}">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button ToolTip="Удалить" 
+                                    IsEnabled="{Binding}"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Top" 
+                                    Cursor="Hand"
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path = DataContext.(viewModels:RequestsReplacementsViewModel.DeleteCommand)}"
+                                    CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="УДЛ" VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <Rectangle Width="20" 
+                                               Margin="1.25 0">
+                                        <Rectangle.Fill>
+                                            <VisualBrush Visual="{StaticResource DeleteSvgIcon}" 
+                                                         Stretch="Uniform" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button ToolTip="Изменить" 
+                                    IsEnabled="{Binding}"
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Top" 
+                                    Cursor="Hand"
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path = DataContext.(viewModels:RequestsReplacementsViewModel.EditCommand)}"
+                                    CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="ИЗМ" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    <Rectangle Width="20" 
+                                                   Margin="1.25 0">
+                                        <Rectangle.Fill>
+                                            <VisualBrush Visual="{StaticResource EditSvgIcon}" 
+                                                             Stretch="Uniform" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button ToolTip="Печать" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Top" 
+                                    Cursor="Hand"
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path = DataContext.(viewModels:RequestsReplacementsViewModel.PrintCommand)}"
+                                    CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="ПЕЧ" VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <Rectangle Width="20" 
+                                               Margin="1.25 0">
+                                        <Rectangle.Fill>
+                                            <VisualBrush Visual="{StaticResource PrintSvgIcon}" 
+                                                         Stretch="Uniform" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button ToolTip="Одобрить" 
+                                    HorizontalAlignment="Center" 
+                                    VerticalAlignment="Top" 
+                                    Cursor="Hand"
+                                    Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path = DataContext.(viewModels:RequestsReplacementsViewModel.ApproveCommand)}"
+                                    CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Одобрить" VerticalAlignment="Center"
+                                               TextTrimming="CharacterEllipsis"/>
+                                    <Rectangle Width="20" 
+                                               Margin="1.25 0">
+                                        <Rectangle.Fill>
+                                            <VisualBrush Visual="{StaticResource AddSvgIcon}" 
+                                                         Stretch="Uniform" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Header="Запрос" 
+                                        IsReadOnly="True" 
+                                        Binding="{Binding }"
+                                        ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        
+        <Label Grid.Row="2"
+               Background="{x:Static styles:Visual.BackColor5_WaikawaGray}"
+               Style="{StaticResource LabelStyle2}"
+               Content = "Замены запроса"/>
+
+        <DataGrid Grid.Row="3"
+                  Margin="2.5 0"
+                  Style="{StaticResource GridStyle}"
+                  CellStyle="{StaticResource CellStyle}" 
+                  ItemsSource="{Binding ReplacementDetails}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Код изделия" 
+                                        IsReadOnly="True" 
+                                        Binding="{Binding ShortProductCode}"
+                                        ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Код детали 1" 
+                                        IsReadOnly="True" 
+                                        Binding="{Binding DetailStartCode}"
+                                        ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Наименование 1" 
+                                        IsReadOnly="True" 
+                                        Binding="{Binding DetailStartName}"                                       
+                                        ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Обозначение 1" 
+                                    IsReadOnly="True" 
+                                    Binding="{Binding DetailStartDesignation}"     
+                                    ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="ГОСТ 1" 
+                                    IsReadOnly="True" 
+                                    Binding="{Binding DetailStartGost}"            
+                                    ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Код детали 2" 
+                                        IsReadOnly="True" 
+                                        Binding="{Binding DetailEndCode}"                        
+                                        ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="Наименование 2" 
+                                        IsReadOnly="True" 
+                                        Binding="{Binding DetailEndName}"    
+                                        ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Обозначение 2" 
+                                        IsReadOnly="True" 
+                                        Binding="{Binding DetailEndDesignation}"        
+                                        ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+
+                <DataGridTextColumn Header="ГОСТ 2" 
+                                        IsReadOnly="True" 
+                                        Binding="{Binding DetailEndGost}"       
+                                        ElementStyle="{StaticResource ElementStyle}">
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+    </Grid>
+</UserControl>

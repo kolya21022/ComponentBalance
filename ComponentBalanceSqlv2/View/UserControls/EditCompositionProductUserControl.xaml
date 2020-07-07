@@ -1,0 +1,317 @@
+﻿<UserControl x:Class="ComponentBalanceSqlv2.View.UserControls.EditCompositionProductUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converters="clr-namespace:ComponentBalanceSqlv2.Converters"
+             xmlns:styles="clr-namespace:ComponentBalanceSqlv2.Utils.Styles"
+             xmlns:viewModels="clr-namespace:ComponentBalanceSqlv2.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="650">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:BoolToVisibilityConverter
+                x:Key="BoolToHiddenConverter"
+                TrueValue="Visible" FalseValue="Collapsed" />
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Utils/Styles/SvgIconsDictionary.xaml"/>
+                <ResourceDictionary Source="../../Utils/Styles/Components.xaml"/>
+                <ResourceDictionary Source="../../Utils/Styles/Text.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок страницы -->
+        <Grid Grid.Row="0" Background="{x:Static styles:Visual.BackColor3_SanJuan}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" 
+                   Style="{DynamicResource LabelStyle}" 
+                   Content="Корректировка обязательных деталей"/>
+
+            <TextBlock Grid.Column="1" Grid.Row="0" Margin="0 0 5 0"
+                       Style="{StaticResource TextBlockPapayaWhipStyle}">
+                <Run>[Записей: </Run>
+                <Run Text="{Binding DisplayCompositionProducts.Count, Mode=OneWay}"/>
+                <Run>]</Run>
+            </TextBlock>
+        </Grid>
+
+        <!-- Тело страницы -->
+        <Grid Grid.Row="1" Margin="0 2.5 0 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="{x:Static styles:Visual.BackColor5_WaikawaGray}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" 
+                       Style="{DynamicResource LabelStyle}"
+                       HorizontalAlignment="Right"
+                       Content="Код: "/>
+                <Label Grid.Row="0" Grid.Column="1"  
+                       Style="{DynamicResource LabelStyle}"
+                       Content="{Binding Product.Code}"/>
+
+                <Label Grid.Row="1" Grid.Column="0" 
+                       Style="{DynamicResource LabelStyle}"
+                       HorizontalAlignment="Right"
+                       Content="Наименование: "/>
+                <Label Grid.Row="1" Grid.Column="1"  
+                       Style="{DynamicResource LabelStyle}"
+                       Content="{Binding Product.Name}"/>
+
+                <Label Grid.Row ="1" Grid.Column="2" 
+                       Style="{DynamicResource LabelStyle}"
+                       HorizontalAlignment="Right"
+                       Content="Обозначение: "/>
+                <Label Grid.Row="1" Grid.Column="3"  
+                       Style="{DynamicResource LabelStyle}"
+                       Content="{Binding Product.Designation}"/>
+            </Grid>
+
+            <!--Панель с подсказкой к фильтрации-->
+            <StackPanel Grid.Row="1" 
+                        Background="{x:Static styles:Visual.BackColor1_AthensGray}"
+                        FlowDirection="RightToLeft" 
+						Orientation="Horizontal" 
+                        HorizontalAlignment="Stretch">
+                <Rectangle Width="20" Height ="20" 
+                           Margin="5 0">
+                    <Rectangle.Fill>
+                        <VisualBrush Visual="{StaticResource FilterMarkerSvgIcon}" Stretch="Uniform"/>
+                    </Rectangle.Fill>
+                </Rectangle>
+                <Label Width="Auto" 
+                 Content="{Binding FilterHotKey}"/>
+            </StackPanel>
+
+            <!--Обёртка таблицы фильтра и кнопки-->
+            <Grid Grid.Row="2" 
+                  Name="FilterBarTableAndButtonGrid" 
+                  Visibility="{Binding IsFilterVisible, Converter={StaticResource BoolToHiddenConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+
+                <DataGrid Grid.Column="0" 
+                          Name="FiltersDataGrid"
+                          Style="{StaticResource GridStyle}" 
+                          CellStyle="{StaticResource CellStyle}"
+                          ItemsSource="{Binding DisplayedFilter}">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Поле фильтра" 
+                                            Width="140" 
+											Binding="{Binding Path=Value.DisplayedColumn}"
+                                            ElementStyle = "{StaticResource ElementStyle}">
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Header="Значение" 
+                                            Width="*" 
+                                            Binding="{Binding Path=Value.Value}"
+                                            ElementStyle = "{StaticResource ElementStyle}">
+                        </DataGridTextColumn>
+                        <DataGridTemplateColumn Width="Auto" MinWidth="60">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <!--ReSharper disable once Xaml.BindingWithContextNotResolved-->
+                                    <Button Tag="{Binding Path=Key}" 											 
+                                            ToolTip="Удалить запись" 
+											HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center" 
+                                            Cursor="Hand"
+                                            Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=DataGrid}, 
+                                                        Path = DataContext.(viewModels:EditCompositionProductViewModel.FilterDeleteCommand)}" 
+                                            CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Tag}">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="УДЛ" 
+                                                       VerticalAlignment="Center" 
+													   TextTrimming="CharacterEllipsis"/>
+                                            <Rectangle Width="20" 
+                                                       Margin="5 0">
+                                                <Rectangle.Fill>
+                                                    <VisualBrush Visual="{StaticResource DeleteSvgIcon}" 
+																 Stretch="Uniform" />
+                                                </Rectangle.Fill>
+                                            </Rectangle>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!--Сброс всех фильтров-->
+                <Button Grid.Column="1" 
+                        Cursor="Hand" 
+                        BorderThickness="1" 
+                        Margin="1.25 3 0 0" 
+                        Height="25" 
+						BorderBrush="{x:Static styles:Visual.LineBorderColor4_BlueBayoux}"				 
+                        VerticalAlignment="Top"
+                        Command="{Binding AllFilterDeleteCommand}">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border Name="Border" 
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+									BorderThickness="{TemplateBinding BorderThickness}" 
+									Background="{TemplateBinding Background}">
+                                <ContentPresenter Content="{TemplateBinding Content}" 
+												  ContentTemplate="{TemplateBinding ContentTemplate}" 
+												  Margin="{TemplateBinding Padding}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Button.IsFocused" Value="True">
+                                    <Setter TargetName="Border" 
+                                            Property="Background" 
+											Value="{x:Static styles:Visual.LineBorderColor5_Sail}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <StackPanel Orientation="Horizontal" 
+                                HorizontalAlignment="Center">
+                        <Rectangle Width="20" Margin="5 0">
+                            <Rectangle.Fill>
+                                <VisualBrush Visual="{StaticResource FilterRemoveSvgIcon}" Stretch="Uniform" />
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <TextBlock Text="Сброс фильтров" 
+                                   VerticalAlignment="Center" 
+                                   TextTrimming="CharacterEllipsis"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+
+            <!-- Главная таблица страницы -->
+            <DataGrid Grid.Row="3" Name="PageDataGrid"
+                  Style="{StaticResource GridStyle}"
+                  CellStyle="{StaticResource CellStyle}" 
+                  ItemsSource="{Binding DisplayCompositionProducts}"                
+                  SelectedItem="{Binding SelectedCompositionProduct, Mode=TwoWay}"
+                  ContextMenuOpening="PageDataGrid_OnContextMenuOpening">
+
+                <!-- Контексное меню фильтра -->
+                <DataGrid.ContextMenu>
+                    <ContextMenu Focusable="False" Padding="0" 
+							 Background="{x:Static styles:Visual.BackColor4_BlueBayoux}" >
+                        <ContextMenu.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Background="{x:Static styles:Visual.BackColor4_BlueBayoux}"/>
+                            </ItemsPanelTemplate>
+                        </ContextMenu.ItemsPanel>
+                        <MenuItem StaysOpenOnClick="True" 
+                              KeyDown="PopupFilterContextMenu_OnKeyDown">
+                            <MenuItem.Header>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" 
+                                           Text="Error" 
+                                           VerticalAlignment="Center" 
+                                           Foreground="{x:Static styles:Visual.ForeColor2_PapayaWhip}"/>
+                                    <TextBox Grid.Column="1" 
+                                         Margin="5 0">
+                                        <TextBox.InputBindings>
+                                            <KeyBinding Key="Enter" 
+                                                    Command="{Binding FilterCommand}"
+                                                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=TextBox}, Path=Parent}"/>
+                                        </TextBox.InputBindings>
+                                    </TextBox>
+                                    <Button Grid.Column="2" 
+                                        Cursor="Hand" 
+                                        Content="Фильтровать" 
+                                        Command="{Binding FilterCommand}"
+                                        CommandParameter="{Binding RelativeSource={RelativeSource Self}, Path=Parent}"/>
+                                </Grid>
+                            </MenuItem.Header>
+                        </MenuItem>
+                    </ContextMenu>
+                </DataGrid.ContextMenu>
+
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Код" 
+                                    IsReadOnly="True" 
+                                    Binding="{Binding Detail.Code}" 
+                                    ElementStyle = "{StaticResource ElementStyle}">
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Наименование" 
+                                    IsReadOnly="True" 
+                                    Binding="{Binding Detail.Name}" 
+                                    ElementStyle = "{StaticResource ElementStyle}">
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="Обозначение" 
+                                    IsReadOnly="True" 
+                                    Binding="{Binding Detail.Designation}" 
+                                    ElementStyle = "{StaticResource ElementStyle}">
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Header="ГОСТ" 
+                                    IsReadOnly="True" 
+                                    Binding="{Binding Detail.Gost}" 
+                                    ElementStyle = "{StaticResource ElementStyle}">
+                    </DataGridTextColumn>
+
+                    <DataGridCheckBoxColumn Header="Необяз." 
+                                        Binding="{Binding IsCanDeleteInRelease}" />
+                    <DataGridCheckBoxColumn Header="Можно списать часть" 
+                                            Binding="{Binding IsCanUsePart}" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <Grid Grid.Row="2" Background="{x:Static styles:Visual.LineBorderColor2_Nepal}">
+            <!-- Кнопка с иконкой и подсветкой клавиатурного фокуса -->
+            <Button Style="{StaticResource ButtonStyle}" 
+                    Template="{StaticResource ButtonTemplate}"
+                    ToolTip="Сохранить" 
+                    Command="{Binding SaveCommand}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Rectangle Width="20" Margin="5 0">
+                        <Rectangle.Fill>
+                            <VisualBrush Visual="{StaticResource SaveSvgIcon}" Stretch="Uniform" />
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBlock Text="Сохранить" 
+                               VerticalAlignment="Center" 
+                               TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+            </Button>
+        </Grid>
+    </Grid>
+</UserControl>

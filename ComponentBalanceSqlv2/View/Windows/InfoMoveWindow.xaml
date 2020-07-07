@@ -1,0 +1,235 @@
+﻿<Window x:Class="ComponentBalanceSqlv2.View.Windows.InfoMoveWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:viewModels="clr-namespace:ComponentBalanceSqlv2.ViewModel"
+        xmlns:converters="clr-namespace:ComponentBalanceSqlv2.Converters"
+        xmlns:styles="clr-namespace:ComponentBalanceSqlv2.Utils.Styles"
+        mc:Ignorable="d"
+        Title="Движение детали" WindowStartupLocation="CenterOwner" 
+        Height="600"
+        Width="800">
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <converters:BoolToVisibilityConverter
+                x:Key="BoolToHiddenConverter"
+                TrueValue="Visible" FalseValue="Collapsed" />
+            <converters:MoveToBrushConverter x:Key="MoveToBrushConverter"/>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Utils/Styles/SvgIconsDictionary.xaml"/>
+                <ResourceDictionary Source="../../Utils/Styles/Components.xaml"/>
+                <ResourceDictionary Source="../../Utils/Styles/Text.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Name="TitleWrappedGrid">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="5"
+                       Fill="{x:Static styles:Visual.BackColor3_SanJuan}"/>
+
+            <Label Grid.Row="0" Grid.Column="0"
+                   Style="{StaticResource LabelStyle}" 
+                   Content="Код детали:"/>
+            <Label Grid.Row="0" Grid.Column="1"
+                   Style="{StaticResource LabelStyle}"
+                   Content="{Binding Balance.Detail.Code}"/>
+            <Label Grid.Row="0" Grid.Column="2" 
+                   Style="{StaticResource LabelStyle}"
+                   Content="Наименование детали:"/>
+            <Label Grid.Row="0" Grid.Column="3"
+                   Style="{StaticResource LabelStyle}"
+                   Content="{Binding Balance.Detail.Name}"/>
+            <Label Grid.Row="1" Grid.Column="0"
+                   Style="{StaticResource LabelStyle}"
+                   Content="Обозначение детали:"/>
+            <Label Grid.Row="1" Grid.Column="1" 
+                   Style="{StaticResource LabelStyle}"
+                   Content="{Binding Balance.Detail.Designation}"/>
+            <Label Grid.Row="1" Grid.Column="2" 
+                   Style="{StaticResource LabelStyle}"
+                   Content="ГОСТ:"/>
+            <Label Grid.Row="1" Grid.Column="3"
+                   Style="{StaticResource LabelStyle}"
+                   Content="{Binding Balance.Detail.Gost}"/>
+
+            <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.Row="0" Grid.RowSpan="2" 
+                           Grid.Column="0" Grid.ColumnSpan="4"
+                           Fill="{x:Static styles:Visual.BackColor6_Lochmara}"/>
+
+                <Label Grid.Row="0" Grid.Column="1"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource LabelStyle}"
+                       Content="Количество:"/>
+                <Label Grid.Row="0" Grid.Column="2"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource LabelStyle}"
+                       Content="Цена:"/>
+
+                <!--На начало-->
+                <Label Grid.Row="1" Grid.Column="0"
+                       Style="{StaticResource LabelStyle}"
+                       Content="На начало:"/>
+                <Label Grid.Row="1" Grid.Column="1"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource LabelStyle}"
+                       Content="{Binding Balance.CountStart}"/>
+                <Label Grid.Row="1" Grid.Column="2"
+                       HorizontalAlignment="Center"
+                       Style="{StaticResource LabelStyle}"
+                       Content="{Binding Balance.CostStart}"/>
+
+                <!--Движения-->
+                <Label Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="4"
+                       Style="{StaticResource LabelStyle2}"
+                       Background="{x:Static styles:Visual.BackColor5_WaikawaGray}"
+                       Content="Движения"/>
+            </Grid>
+        </Grid>
+
+
+        <!-- Главная таблица страницы -->
+        <DataGrid Grid.Row="1" 
+                  Style="{StaticResource GridStyle}"
+                  CellStyle="{StaticResource CellStyle}"
+
+                  ItemsSource="{Binding Moves}" 
+                  SelectedItem="{Binding SelectedMove}">
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Setter Property="Foreground" Value="{Binding Converter={StaticResource MoveToBrushConverter}}"/>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.Columns>
+                <!-- Кнопка удаления-->
+                <DataGridTemplateColumn>
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button ToolTip="Удалить" 
+                                        HorizontalAlignment="Center" 
+                                        VerticalAlignment="Top" 
+                                        Cursor="Hand"
+                                        Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path = DataContext.(viewModels:InfoMoveWindowViewModel.DeleteCommand)}"
+                                        CommandParameter="{Binding}"   
+                                        Visibility="{Binding IsUserCanDelete , Converter={StaticResource BoolToHiddenConverter}}">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="УДЛ" VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                    <Rectangle Width="20" Margin="1.25 0">
+                                        <Rectangle.Fill>
+                                            <VisualBrush Visual="{StaticResource DeleteSvgIcon}" 
+                                                         Stretch="Uniform" />
+                                        </Rectangle.Fill>
+                                    </Rectangle>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+                <DataGridTextColumn Binding="{Binding DisplayMoveTypeInfo}" 
+                                    ElementStyle="{StaticResource ElementStyle}"
+                                    IsReadOnly="True">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Кол-во"                                   
+                                    Binding="{Binding Count}" 
+                                    ElementStyle="{StaticResource ElementStyle}"
+                                    IsReadOnly="True">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Цена"                                   
+                                    Binding="{Binding Cost}" 
+                                    ElementStyle="{StaticResource ElementStyle}"
+                                    IsReadOnly="True">
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Сумма"                                   
+                                    Binding="{Binding Sum}" 
+                                    ElementStyle="{StaticResource ElementStyle}"
+                                    IsReadOnly="True">
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding DisplayDiscription}" 
+                                    ElementStyle="{StaticResource ElementStyle}"
+                                    IsReadOnly="True">
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Rectangle Grid.Row="2" Grid.RowSpan="2" Grid.ColumnSpan="2"
+                   Fill="{x:Static styles:Visual.BackColor5_WaikawaGray}"/>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="86"/>
+                <ColumnDefinition Width="86"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Rectangle Grid.Row="0"
+                       Grid.Column="0" Grid.ColumnSpan="4"
+                       Fill="{x:Static styles:Visual.BackColor6_Lochmara}"/>
+            <Label Grid.Column="0"
+                   Style="{StaticResource LabelStyle}"
+                   Content="На конец:"/>
+            <Label Grid.Column="1"
+                   HorizontalAlignment="Center"
+                   Style="{StaticResource LabelStyle}"
+                   Content="{Binding Balance.CountEnd}"/>
+            <Label Grid.Column="2"
+                   HorizontalAlignment="Center"
+                   Style="{StaticResource LabelStyle}"
+                   Content="{Binding Balance.CostEnd}"/>
+        </Grid>
+
+        <Button Grid.Row="3"
+                Style="{StaticResource ButtonStyle}" 
+                Template="{StaticResource ButtonTemplate}"
+                ToolTip="Закрыть" 
+                Click="CloseButton_OnClick">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Rectangle Width="20" Margin="5 0">
+                    <Rectangle.Fill>
+                        <VisualBrush Visual="{StaticResource CloseSvgIcon}" Stretch="Uniform" />
+                    </Rectangle.Fill>
+                </Rectangle>
+                <TextBlock Text="Закрыть" 
+                           VerticalAlignment="Center" 
+                           TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+        </Button>
+    </Grid>
+</Window>

@@ -1,0 +1,376 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\EntityFramework.6.4.0\build\EntityFramework.props" Condition="Exists('packages\EntityFramework.6.4.0\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{CE4D2EB2-68AF-4A01-BBC3-4AD2918D9180}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ComponentBalanceSqlv2</RootNamespace>
+    <AssemblyName>ComponentBalanceSqlv2</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>packages\EntityFramework.6.4.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.ReportViewer.WinForms, Version=12.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="UIAutomationProvider" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=3.8.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>packages\Extended.Wpf.Toolkit.3.8.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Converters\MoveToBrushConverter.cs" />
+    <Compile Include="Converters\EnoughToBrushConverter.cs" />
+    <Compile Include="Converters\ReverseBoolConverter.cs" />
+    <Compile Include="Converters\UserConfigConverter.cs" />
+    <Compile Include="Data\Dbf\DbControl.cs" />
+    <Compile Include="Data\Dbf\Pkom.cs" />
+    <Compile Include="Data\CompositionProduct.cs" />
+    <Compile Include="Data\Detail.cs" />
+    <Compile Include="Data\DomainContext.cs" />
+    <Compile Include="Data\IEnoughDetail.cs" />
+    <Compile Include="Data\Measure.cs" />
+    <Compile Include="Data\MonthClose.cs" />
+    <Compile Include="Data\MonthYear.cs" />
+    <Compile Include="Data\Moves\DefectMove.cs" />
+    <Compile Include="Data\Moves\EquipmentMove.cs" />
+    <Compile Include="Data\Moves\ExportReworkMove.cs" />
+    <Compile Include="Data\Moves\ExportWarehouseMove.cs" />
+    <Compile Include="Data\Moves\ExportWorkGuildMove.cs" />
+    <Compile Include="Data\Moves\ImportReworkMove.cs" />
+    <Compile Include="Data\Moves\ImportWarehouseMove.cs" />
+    <Compile Include="Data\Moves\ImportWorkGuildMove.cs" />
+    <Compile Include="Data\Moves\Move.cs" />
+    <Compile Include="Data\Moves\MoveType.cs" />
+    <Compile Include="Data\Moves\ReleaseMove.cs" />
+    <Compile Include="Data\Moves\SparePartMove.cs" />
+    <Compile Include="Data\Product.cs" />
+    <Compile Include="Data\ReleaseProduct.cs" />
+    <Compile Include="Data\ReleaseReplacementDetail.cs" />
+    <Compile Include="Data\ReplacementDetail.cs" />
+    <Compile Include="Enums\Enough.cs" />
+    <Compile Include="Enums\PartRelease.cs" />
+    <Compile Include="Model\NotEnoughDetailReport.cs" />
+    <Compile Include="Model\ParametrsBuilder\IParametrsBuilder.cs" />
+    <Compile Include="Model\ParametrsBuilder\MainParametrsBuilder.cs" />
+    <Compile Include="Model\ReleaseProductReport.cs" />
+    <Compile Include="Data\TmcType.cs" />
+    <Compile Include="Data\WorkGuild.cs" />
+    <Compile Include="Model\ReleaseReport.cs" />
+    <Compile Include="Model\StorageException.cs" />
+    <Compile Include="Services\BalanceService.cs" />
+    <Compile Include="Services\CalculateBalanceService.cs" />
+    <Compile Include="Services\CompositionProductService.cs" />
+    <Compile Include="Model\DbSetExtensions.cs" />
+    <Compile Include="Services\DetailService.cs" />
+    <Compile Include="Services\MeasureService.cs" />
+    <Compile Include="Services\ProductService.cs" />
+    <Compile Include="Services\ReleaseProductService.cs" />
+    <Compile Include="Services\ReplacementDetailService.cs" />
+    <Compile Include="Utils\AuthenticationEventArgs.cs" />
+    <Compile Include="Model\BaseNotificationClass.cs" />
+    <Compile Include="Utils\BuildMessageBox.cs" />
+    <Compile Include="Utils\Common.cs" />
+    <Compile Include="Utils\Constants.cs" />
+    <Compile Include="Utils\FilterCriterias.cs" />
+    <Compile Include="Commands\RelayCommand.cs" />
+    <Compile Include="Model\KeyMoves.cs" />
+    <Compile Include="Utils\UserControlUtil.cs" />
+    <Compile Include="Utils\Validator.cs" />
+    <Compile Include="Utils\Styles\Visual.cs" />
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Data\Balance.cs" />
+    <Compile Include="ViewModel\AddDetailInReleaseViewModel.cs" />
+    <Compile Include="ViewModel\AddReleaseViewModel.cs" />
+    <Compile Include="ViewModel\AddReworkViewModel.cs" />
+    <Compile Include="ViewModel\AuthenticationViewModel.cs" />
+    <Compile Include="ViewModel\BalanceCorrectViewModel.cs" />
+    <Compile Include="ViewModel\ChangePasswordViewModel.cs" />
+    <Compile Include="ViewModel\EditCompositionProductViewModel.cs" />
+    <Compile Include="ViewModel\InfoMoveWindowViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\ParametrsViewModel.cs" />
+    <Compile Include="ViewModel\ReleaseViewModel.cs" />
+    <Compile Include="ViewModel\ReplacementDetailsViewModel.cs" />
+    <Compile Include="ViewModel\ReportsViewModel.cs" />
+    <Compile Include="ViewModel\RequestReplacements\AddRequestReplacementsViewModel.cs" />
+    <Compile Include="ViewModel\RequestReplacements\RequestsReplacementsViewModel.cs" />
+    <Compile Include="ViewModel\UserConfigViewModel.cs" />
+    <Compile Include="View\UserControls\AddDetailInReleaseUserControl.xaml.cs">
+      <DependentUpon>AddDetailInReleaseUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\AddReleaseUserControl.xaml.cs">
+      <DependentUpon>AddReleaseUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\AddReworkUserControl.xaml.cs">
+      <DependentUpon>AddReworkUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\EditCompositionProductUserControl.xaml.cs">
+      <DependentUpon>EditCompositionProductUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\ReplacementDetailsUserControl.xaml.cs">
+      <DependentUpon>ReplacementDetailsUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\RequestReplacements\AddRequestReplacementsUserControl.xaml.cs">
+      <DependentUpon>AddRequestReplacementsUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\BalanceCorrectUserControl.xaml.cs">
+      <DependentUpon>BalanceCorrectUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\ReleaseUserControl.xaml.cs">
+      <DependentUpon>ReleaseUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\ReportUserControl.xaml.cs">
+      <DependentUpon>ReportUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\UserControls\RequestReplacements\RequestsReplacementsUserControl.xaml.cs">
+      <DependentUpon>RequestsReplacementsUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\ChangePasswordWindow.xaml.cs">
+      <DependentUpon>ChangePasswordWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\InfoMoveWindow.xaml.cs">
+      <DependentUpon>InfoMoveWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\ParametersWindow.xaml.cs">
+      <DependentUpon>ParametersWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\AuthenticationWindow.xaml.cs">
+      <DependentUpon>AuthenticationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\ReportWindow.xaml.cs">
+      <DependentUpon>ReportWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Windows\UserConfigWindow.xaml.cs">
+      <DependentUpon>UserConfigWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Utils\Styles\Components.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Utils\Styles\SvgIconsDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Utils\Styles\Text.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControls\AddDetailInReleaseUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\AddReleaseUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\AddReworkUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\EditCompositionProductUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\ReplacementDetailsUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControls\RequestReplacements\AddRequestReplacementsUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\BalanceCorrectUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControls\ReleaseUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\UserControls\ReportUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\UserControls\RequestReplacements\RequestsReplacementsUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\ChangePasswordWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\InfoMoveWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\ParametersWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Windows\AuthenticationWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Windows\MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\Windows\ReportWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Windows\UserConfigWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="App_Data\Reports\Balance.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_Data\Reports\NotEnoughDetail.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_Data\Reports\Release.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_Data\Reports\ReleaseProducts.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="App_Data\Reports\RequestsReplacements.rdlc">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\DataSources\ComponentBalanceSqlv2.Data.Dbf.Pkom.datasource" />
+    <None Include="Properties\DataSources\ComponentBalanceSqlv2.Data.ReplacementDetail.datasource" />
+    <None Include="Properties\DataSources\ComponentBalanceSqlv2.Data.Reports.ReleaseProductReport.datasource" />
+    <None Include="Properties\DataSources\ComponentBalanceSqlv2.DataDbf.Pkom.datasource" />
+    <None Include="Properties\DataSources\ComponentBalanceSqlv2.Model.NotEnoughDetailReport.datasource" />
+    <None Include="Properties\DataSources\ComponentBalanceSqlv2.Model.ReleaseProductReport.datasource" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Данный проект ссылается на пакеты NuGet, отсутствующие на этом компьютере. Используйте восстановление пакетов NuGet, чтобы скачать их.  Дополнительную информацию см. по адресу: http://go.microsoft.com/fwlink/?LinkID=322105. Отсутствует следующий файл: {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\EntityFramework.6.4.0\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.0\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('packages\EntityFramework.6.4.0\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\EntityFramework.6.4.0\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="packages\EntityFramework.6.4.0\build\EntityFramework.targets" Condition="Exists('packages\EntityFramework.6.4.0\build\EntityFramework.targets')" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

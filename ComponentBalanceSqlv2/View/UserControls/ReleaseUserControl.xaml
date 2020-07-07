@@ -1,0 +1,562 @@
+﻿<UserControl x:Class="ComponentBalanceSqlv2.View.UserControls.ReleaseUserControl"              
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"     
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"      
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"   
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"   
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:styles="clr-namespace:ComponentBalanceSqlv2.Utils.Styles"
+             xmlns:viewModels="clr-namespace:ComponentBalanceSqlv2.ViewModel"
+             xmlns:converters="clr-namespace:ComponentBalanceSqlv2.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="400" d:DesignWidth="650">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:BoolToVisibilityConverter
+                x:Key="BoolToHiddenConverter"
+                TrueValue="Visible" FalseValue="Collapsed" />
+            <converters:BoolToVisibilityConverter
+                x:Key="BoolToHiddenConverter2"
+                TrueValue="Collapsed" FalseValue="Visible" />
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../../Utils/Styles/SvgIconsDictionary.xaml"/>
+                <ResourceDictionary Source="../../Utils/Styles/Components.xaml"/>
+                <ResourceDictionary Source="../../Utils/Styles/Text.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок страницы -->
+        <Grid Grid.Row="0"  Margin="0 0 0 2.5" 
+              Background="{x:Static styles:Visual.BackColor4_BlueBayoux}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" 
+                       VerticalAlignment="Center" 
+                       FontWeight="Bold" 
+                       Margin="3 5" 
+                       Foreground="{x:Static styles:Visual.ForeColor2_PapayaWhip}">
+                Выпуск
+            </TextBlock>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="180"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+
+            <Grid Grid.Column="0" Background="{x:Static styles:Visual.BackColor3_SanJuan}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Column="0" Grid.Row="0" 
+                       Style="{StaticResource LabelStyle}"
+                       HorizontalContentAlignment="Center"
+                       Content="Поиск по выпуску"/>
+
+                <TextBox Grid.Row="1" 
+                         Margin="7.5 5 7.5 12" 
+                         Style="{StaticResource TextBoxStyle}"
+                         Text="{Binding SearchTextProduct, UpdateSourceTrigger=PropertyChanged}"/>
+
+                <ListBox Name="ProductListBox" Grid.Row="2"
+                         SelectionMode="Single"						 
+                         ScrollViewer.VerticalScrollBarVisibility="Visible"			        
+                         ScrollViewer.HorizontalScrollBarVisibility="Auto"						 
+                         ItemsSource="{Binding FilterReleaseProductList}"
+                         SelectedItem="{Binding SelectedReleaseProduct}">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="Foreground" Value="{x:Static styles:Visual.ForeColor1_BigStone}" />
+                            <Style.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter Property="TextElement.Foreground" 
+                                            Value="{x:Static styles:Visual.ForeColor4_Red}"/>
+                                    <Setter Property="FontWeight" Value="Bold" />
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <!--ReSharper disable Xaml.BindingWithContextNotResolved-->
+                            <TextBlock FontFamily="Lucida Console" TextWrapping="Wrap" FontSize="15">
+                           <Run Text="{Binding Path=FactoryNumber, Mode=OneWay}"/>
+                           <Run Text="{Binding Path=Product.Designation, Mode=OneWay}"/>
+                           <Run Text="{Binding Path=NumberRework, Mode=OneWay}"/>
+                            </TextBlock>
+                            <!--ReSharper restore Xaml.BindingWithContextNotResolved-->
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Background="{x:Static styles:Visual.BackColor4_BlueBayoux}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <Rectangle Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Grid.ColumnSpan="4" 
+                           Fill="{x:Static styles:Visual.BackColor6_Lochmara}" />
+
+                    <Button Grid.Row="0" Grid.Column="0" 
+                        Grid.ColumnSpan="2" 
+                        Margin="2.5" 
+                        Padding="0 0 5 0" 
+                        Cursor="Hand"              
+                        ToolTip="Удалить выпуск весь/часть" 
+                        Command="{Binding DeleteReleaseCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="20" Margin="5 0">
+                                <Rectangle.Fill>
+                                    <VisualBrush Visual="{StaticResource DeleteSvgIcon}" Stretch="Uniform" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <TextBlock Text="Удалить выпуск весь/часть" 
+                                   VerticalAlignment="Center" 
+                                   TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Grid.Row="0" Grid.Column="2"
+                            Grid.ColumnSpan="2" 
+                            Margin="2.5" 
+                            Padding="0 0 5 0" 
+                            Cursor="Hand"              
+                            ToolTip="Добавить выпуск" 
+                            Command="{Binding AddReleaseCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="20" Margin="5 0">
+                                <Rectangle.Fill>
+                                    <VisualBrush Visual="{StaticResource AddSvgIcon}" Stretch="Uniform" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <TextBlock Text="Добавить выпуск" 
+                                   VerticalAlignment="Center" 
+                                   TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Grid.Row="1" Grid.Column="2"
+                            Grid.ColumnSpan="2" 
+                            Margin="2.5" 
+                            Padding="0 0 5 0" 
+                            Cursor="Hand"              
+                            ToolTip="Изменить выпуск" 
+                            Command="{Binding EditReleaseCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <Rectangle Width="20" Margin="5 0">
+                                <Rectangle.Fill>
+                                    <VisualBrush Visual="{StaticResource EditSvgIcon}" Stretch="Uniform" />
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <TextBlock Text="Изменить выпуск" 
+                                       VerticalAlignment="Center" 
+                                       TextTrimming="CharacterEllipsis"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!--Заводской номер-->
+                    <Label Grid.Column="0" Grid.Row="2" 
+                       Style="{StaticResource LabelStyle}"
+                       Content="Заводской номер:" />
+                    <Label Grid.Column="1" Grid.Row="2"
+                       Style="{StaticResource LabelStyle}"
+                       Content="{Binding SelectedReleaseProduct.FactoryNumber}"/>
+
+                    <!--Код-->
+                    <Label Grid.Column="2" Grid.Row="2" 
+                       Style="{StaticResource LabelStyle}"                 
+                       Content="Код:" />
+                    <Label Grid.Column="3" Grid.Row="2" 
+                       Style="{StaticResource LabelStyle}"        
+                       Content="{Binding SelectedReleaseProduct.Product.Code}"/>
+
+                    <!--Наименование-->
+                    <Label Grid.Column="0" Grid.Row="3" 
+                       Style="{StaticResource LabelStyle}"                 
+                       Content="Наименование:" />
+                    <Label Grid.Column="1" Grid.Row="3" 
+                       Style="{StaticResource LabelStyle}"
+                       Content="{Binding SelectedReleaseProduct.Product.Name}"/>
+
+                    <!--Обозначение-->
+                    <Label Grid.Column="2" Grid.Row="3" 
+                       Style="{StaticResource LabelStyle}"
+                       Content="Обозначение:" />
+                    <Label Grid.Column="3" Grid.Row="3" 
+                       HorizontalContentAlignment="Left"
+                       Style="{StaticResource LabelStyle}"
+                       Content="{Binding SelectedReleaseProduct.Product.Designation}"/>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="4*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <DataGrid Grid.Row="0" 
+                              Style="{StaticResource GridStyle}"		
+                              CellStyle="{StaticResource CellStyle}"                  
+                              VirtualizingStackPanel.VirtualizationMode="Standard"
+                              ItemsSource="{Binding SelectedReleaseProduct.ReleaseMoves, Mode=TwoWay}"
+                              SelectedItem="{Binding SelectedReleaseMove}"
+                              Visibility="{Binding SelectedReleaseProduct.IsRework, Converter={StaticResource BoolToHiddenConverter2}}">
+
+                        <DataGrid.Columns>
+                            <!--Кнопка удаления-->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button ToolTip="Удалить" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Top" 
+                                                Cursor="Hand"
+                                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path = DataContext.(viewModels:ReleaseViewModel.DeleteReleaseMoveCommand)}"
+                                                CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                                <Rectangle Width="20" 
+                                                   Margin="1.25 0">
+                                                    <Rectangle.Fill>
+                                                        <VisualBrush Visual="{StaticResource DeleteSvgIcon}" 
+                                                             Stretch="Uniform" />
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="Код" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Code}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Кол-во" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Count}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Цена" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Cost}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Наименование" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Name}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Марка" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Designation}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="ГОСТ" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Gost}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Ед.изм." 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Measure.ShortName}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Вид ТМЦ" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.TmcType.Name}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+
+                    <Grid Grid.Row="0" 
+                          Visibility="{Binding SelectedReleaseProduct.IsRework, Converter={StaticResource BoolToHiddenConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Row="0"
+                               Style="{StaticResource LabelStyle2}"
+                               Background="{x:Static styles:Visual.BackColor5_WaikawaGray}"
+                               Content="На приход"/>
+
+                        <DataGrid Grid.Row="1" 
+                              Style="{StaticResource GridStyle}"		
+                              CellStyle="{StaticResource CellStyle}"                  
+                              VirtualizingStackPanel.VirtualizationMode="Standard"
+                              ItemsSource="{Binding SelectedReleaseProduct.ImportReworkMoves, Mode=TwoWay}">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Код" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Code}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Кол-во" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Count}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Цена" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Cost}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Наименование" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Name}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Марка" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Designation}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="ГОСТ" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Gost}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Ед.изм." 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Measure.ShortName}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Вид ТМЦ" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.TmcType.Name}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <Label Grid.Row="2"
+                               Style="{StaticResource LabelStyle2}"
+                               Background="{x:Static styles:Visual.BackColor5_WaikawaGray}"
+                               Content="На расход"/>
+
+                        <DataGrid Grid.Row="3" 
+                              Style="{StaticResource GridStyle}"		
+                              CellStyle="{StaticResource CellStyle}"                  
+                              VirtualizingStackPanel.VirtualizationMode="Standard"
+                              ItemsSource="{Binding SelectedReleaseProduct.ExportReworkMoves, Mode=TwoWay}">
+
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Код" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Code}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Кол-во" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Count}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="Цена" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Cost}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Наименование" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Name}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Марка" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Designation}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="ГОСТ" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Gost}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Ед.изм." 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.Measure.ShortName}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+
+                                <DataGridTextColumn Header="Вид ТМЦ" 
+                                        IsReadOnly="True"
+                                        Binding="{Binding Balance.Detail.TmcType.Name}"
+                                        ElementStyle = "{StaticResource ElementStyle}">
+                                </DataGridTextColumn>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </Grid>
+                    
+                    <Label Grid.Row="1"
+                           Style="{StaticResource LabelStyle2}"
+                           Background="{x:Static styles:Visual.BackColor5_WaikawaGray}"
+                           Content="Докомплектация"/>
+
+                    <DataGrid Grid.Row="2" 
+                              Style="{StaticResource GridStyle}"		
+                              CellStyle="{StaticResource CellStyle}"
+                              VirtualizingStackPanel.VirtualizationMode="Standard"
+                              ItemsSource="{Binding SelectedReleaseProduct.EquipmentMoves, Mode=TwoWay}"
+                              SelectedItem="{Binding SelectedEquipmentMove}">
+                        <DataGrid.Columns>
+                            <!--Кнопка удаления-->
+                            <DataGridTemplateColumn>
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button ToolTip="Удалить" 
+                                                HorizontalAlignment="Center" 
+                                                VerticalAlignment="Top" 
+                                                Cursor="Hand"
+                                                Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path = DataContext.(viewModels:ReleaseViewModel.DeleteEquipmentMoveCommand)}"
+                                                CommandParameter="{Binding}">
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock VerticalAlignment="Center"
+                                                   TextTrimming="CharacterEllipsis"/>
+                                                <Rectangle Width="20" 
+                                                   Margin="1.25 0">
+                                                    <Rectangle.Fill>
+                                                        <VisualBrush Visual="{StaticResource DeleteSvgIcon}" 
+                                                             Stretch="Uniform" />
+                                                    </Rectangle.Fill>
+                                                </Rectangle>
+                                            </StackPanel>
+                                        </Button>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                            <DataGridTextColumn Header="Код" 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Balance.Detail.Code}"
+                                                ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Кол-во" 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Count}"
+                                                ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="Цена" 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Cost}"
+                                                ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Наименование" 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Balance.Detail.Name}"
+                                                ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Марка" 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Balance.Detail.Designation}"
+                                                ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="ГОСТ" 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Balance.Detail.Gost}"
+                                                ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Ед.изм." 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Balance.Detail.Measure.ShortName}"
+                                                ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+
+                            <DataGridTextColumn Header="Вид ТМЦ" 
+                                                IsReadOnly="True"
+                                                Binding="{Binding Balance.Detail.TmcType.Name}"
+                                                ElementStyle = "{StaticResource ElementStyle}">
+                            </DataGridTextColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+
+                <Grid Grid.Row="2"  Background="{x:Static styles:Visual.BackColor4_BlueBayoux}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto" MinWidth="100"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="Auto" MinWidth="100"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Column="0" 
+                           Style="{StaticResource LabelStyle}"
+                           HorizontalAlignment="Right"
+                           Content="Покупные сумма:"/>
+                    <xctk:DecimalUpDown Grid.Column="1"
+                                        Margin="2.5" 
+                                        ShowButtonSpinner="False"
+                                        IsReadOnly="True" 
+                                        FormatString="F2"
+                                        Value="{Binding SelectedReleaseProduct.TotalBuySum, Mode=OneWay}"/>
+
+                    <Label Grid.Column="2" 
+                           Style="{StaticResource LabelStyle}"
+                           HorizontalAlignment="Right"
+                           Content="Материалы сумма:"/>
+                    <xctk:DecimalUpDown Grid.Column="3"
+                                        Margin="2.5" 
+                                        ShowButtonSpinner="False"
+                                        IsReadOnly="True" 
+                                        FormatString="F2"
+                                        Value="{Binding SelectedReleaseProduct.TotalMaterialSum, Mode=OneWay}"/>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
